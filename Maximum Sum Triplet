@@ -1,0 +1,23 @@
+int get(set<int>& s,int val){
+    auto it=s.lower_bound(val);
+    it--;
+    return *(it);
+}
+int Solution::solve(vector<int> &A){
+    int mx=0, n=A.size();
+    // maintain suffix array
+    vector<int> max_suf(n+1, 0);
+    for(int i=n-1; i>=0; i--)
+        max_suf[i]=max(max_suf[i+1], A[i]);
+
+    set<int> s;
+    s.insert(INT_MIN);
+    for(int i=0; i<n; i++){
+        if(max_suf[i+1]>A[i]){
+            mx=max(A[i]+max_suf[i+1]+get(s, A[i]), mx);
+
+            s.insert(A[i]);
+        }
+    }
+    return mx;
+}
