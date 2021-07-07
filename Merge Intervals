@@ -1,0 +1,24 @@
+vector<Interval> Solution::insert(vector<Interval> &intervals, Interval newInterval) {
+    vector<Interval> t;
+    for(int i=0; i<intervals.size(); i++){
+        t.push_back(intervals[i]);
+    }
+    t.push_back(newInterval);
+    sort(t.begin(), t.end(), [](const Interval&a,const Interval&b){
+        return a.start<b.start; 
+    });
+
+    Interval temp;
+    temp.start=t[0].start, temp.end=t[0].end;
+    vector<Interval> v;
+    for(int i=1; i<t.size(); i++){
+        if(temp.end>=t[i].start){
+            temp.end=max(temp.end, t[i].end), temp.start=min(temp.start, t[i].start);
+        }else{
+            v.push_back(temp);
+            temp.start=t[i].start, temp.end=t[i].end;
+        }
+    }
+    v.push_back(temp);
+    return v;
+}
