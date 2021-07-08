@@ -1,0 +1,39 @@
+void helper(unordered_map<int,vector<int>>& mp,int curr,vector<bool>& visited,int& cnt){
+    visited[curr]=true;
+     cnt++;
+    for(auto x:mp[curr]){
+        if(!visited[x]){
+            helper(mp, x, visited, cnt);
+        }
+    }
+    return ;
+}
+void dfs(unordered_map<int,vector<int>>& mp,int curr,vector<bool>& visited,int &edges,vector<int>& cnt){
+    visited[curr]=true;
+    for(auto x:mp[curr]){
+        if(!visited[x]){
+            if(cnt[x]>0 and cnt[x]%2==0){
+                edges++;
+            }
+            dfs(mp, x, visited, edges, cnt);
+        }
+    }
+    return ;
+}
+int Solution::solve(int A, vector<vector<int> > &B) {
+    vector<int> cnt(A+1, 0);
+    unordered_map<int, vector<int>> mp;
+    for(int i=0; i<B.size(); i++)
+        mp[B[i][0]].push_back(B[i][1]);
+    
+    for(int i=1; i<=A; i++){
+        vector<bool> visited(A+1, false);
+        int ans=0;
+        helper(mp, i, visited, ans);
+        cnt[i]=ans;
+    }
+    int edges=0;
+    vector<bool> visited(A+1, false);
+    dfs(mp, 1, visited, edges, cnt);
+    return edges;
+}
