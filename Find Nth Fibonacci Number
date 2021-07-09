@@ -1,0 +1,25 @@
+int mod=1000000007;
+vector<long> multiply(vector<long> a1,vector<long> a2){
+    for(int i=0; i<=3; i++)a1[i]=a1[i]%mod, a2[i]=a2[i]%mod;
+    vector<long> t(4);
+    t[0]=((a1[0]*a2[0])%mod+(a1[1]*a2[2])%mod)%mod;
+    t[1]=((a1[0]*a2[1])%mod+(a1[1]*a2[3])%mod)%mod;
+    t[2]=((a1[2]*a2[0])%mod+(a1[3]*a2[2])%mod)%mod;
+    t[3]=((a1[2]*a2[1])%mod+(a1[3]*a2[3])%mod)%mod;
+    return t;
+}
+vector<long> fib(vector<long> arr,int n){
+    vector<long> temp={1, 1, 1, 0};
+    while(n){
+        if(n&1)
+            temp=multiply(arr, temp);
+        arr=multiply(arr, arr),n/=2;
+    }
+    return temp;
+}
+int Solution::solve(int n) {
+    if(n<=2)return 1;
+    vector<long> arr={1, 1, 1, 0};
+    arr=fib(arr, n-2);
+    return arr[0]%mod;
+}
