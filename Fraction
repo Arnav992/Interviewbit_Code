@@ -1,0 +1,27 @@
+string Solution::fractionToDecimal(int A, int B){
+    string ans="";
+    if((A<0 and B>0) || (A>0 and B<0))
+        ans+="-";
+    long n=abs((long)A), d=abs((long)B);
+    ans.append(to_string(n/d));
+    
+    if(n%d==0)return ans;
+    
+    ans.append(".");
+    
+    long r=n%d;
+    unordered_map<long, int> mp;
+    while(r!=0){
+        if(mp.count(r)){
+            ans.insert(mp[r], 1, '(');
+            ans.append(1, ')');
+            break;
+        }
+        mp[r]=ans.size();
+        r*=10;
+        ans.append(to_string(r/d));
+        r=r%d;
+    }
+    
+    return ans;
+}
