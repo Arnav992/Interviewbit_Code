@@ -1,0 +1,28 @@
+vector<int> Solution::equal(vector<int> &A) {
+    vector<int> res,ans;
+    unordered_map<int, vector<int>> mp;
+    int n=A.size();
+    for(int i=0; i<n; i++){
+        for(int j=i+1; j<n; j++){
+            int val=A[i]+A[j];
+
+            if(mp.count(val)){
+                if(mp[val][0]<i and mp[val][1]!=j and mp[val][1]!=i){
+                    res.push_back(mp[val][0]);
+                    res.push_back(mp[val][1]);
+                    res.push_back(i),res.push_back(j);
+
+                    if(ans.size()==0)ans=res;
+                    else if(ans>res){
+                        ans=res;
+                    }
+                }
+            }else{
+                res.push_back(i),res.push_back(j);
+                mp[val]=res;
+            }
+            res.clear();
+        }
+    }
+    return ans;
+}
