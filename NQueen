@@ -1,0 +1,43 @@
+bool check(vector<string>& grid,int i,int j){
+    int n=grid.size();
+    for(int k=0; k<grid.size(); k++){
+        if(grid[k][j]=='Q' || grid[i][k]=='Q')return false;
+    }
+    // daigonals
+    for(int x=i, y=j; x<n and y<n ; x++,y++){
+        if(grid[x][y]=='Q')return false;
+    }
+    for(int x=i, y=j; x>=0 and y>=0; x--,y--){
+        if(grid[x][y]=='Q')return false;
+    }
+    for(int x=i, y=j; x>=0 and y<n ; x--,y++){
+        if(grid[x][y]=='Q')return false;
+    }
+    for(int x=i, y=j; x<n and y>=0 ; x++,y--){
+        if(grid[x][y]=='Q')return false;
+    }
+
+    return true;
+}
+void dfs(vector<string>& grid, int row, vector<vector<string>>& ans){
+    if(row==grid.size()){
+        ans.push_back(grid);
+        return;
+    }
+
+    for(int j=0; j<grid.size(); j++){
+        if(check(grid, row, j)){
+            grid[row][j]='Q';
+            dfs(grid, row+1, ans);
+            grid[row][j]='.';
+        }
+    }
+    return ;
+}
+vector<vector<string> > Solution::solveNQueens(int A) {
+    if(A<=0){};
+    vector<vector<string>> ans;
+    vector<string> grid(A, string(A, '.'));
+    dfs(grid, 0, ans);
+    return ans;
+}
